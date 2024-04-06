@@ -4,7 +4,7 @@ import time
 app = Flask(__name__)
 
 @app.route('/fraud/detection', methods=['POST'])
-def detect_fraud(userId):
+def detect_fraud():
     # Get the request data
     data = request.get_json()
 
