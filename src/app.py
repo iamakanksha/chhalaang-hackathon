@@ -7,7 +7,6 @@ app = Flask(__name__)
 def detect_fraud():
     # Get the request data
     data = request.get_json()
-
     # Perform fraud detection logic here
     # ...
 
@@ -24,6 +23,8 @@ def detect_fraud():
     }
 
     return result
+
+
 
 if __name__ == '__main__':
     app.run()
