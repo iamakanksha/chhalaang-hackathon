@@ -122,16 +122,3 @@ def detect(input_data):
         violations.append("RULE-002")
 
     return violations
-
-input_data = {
-    "transactionAmount": 300000,
-    "dateTimeTransaction": 1712397351,
-    "merchantCategoryCode": 5969,
-    "cardBalance": 350000,
-    "encryptedHexCardNo": "997ea24f732ed174be1eafd9e5834eb9838d09bc",
-    "encryptedPAN": "Kg1WR6lwTruEPIDK0GS4w82/wrFeXTU5SjD9TfyUXmc=",
-    "latitude": 28.644800,
-    "longitude": 77.216721
-}
-
-# detect(input_data)
