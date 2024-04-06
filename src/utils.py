@@ -84,7 +84,7 @@ def rule_02(input_data, dataset, user_id=None):
         lambda x: datetime.fromtimestamp(x) >= twelve_hours_ago)]
 
 
-def main(input_data):
+def detect(input_data):
     transaction_data = load_csv_and_convert_to_df('dataset/user_data.csv')
     print(rule_01(input_data, transaction_data))
 
@@ -100,4 +100,3 @@ input_data = {
     "longitude": 77.216721
 }
 
-main(input_data)
