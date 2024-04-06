@@ -10,7 +10,7 @@ def detect_fraud():
     data = request.get_json()
     # Perform fraud detection logic here
     # ...
-    #detect(data)
+    detect(data)
     status = "ALERT";
     # Return the result
     rule_violated = ["RULE-001", "RULE-003"]; # replace with method to get rule violated
