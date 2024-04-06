@@ -1,7 +1,6 @@
-from flask import Flask, request
+from app import app
+from Flask import request
 import time
-
-app = Flask(__name__)
 
 @app.route('/fraud/detection', methods=['POST'])
 def detect_fraud():
@@ -23,8 +22,3 @@ def detect_fraud():
     }
 
     return result
-
-
-
-if __name__ == '__main__':
-    app.run()
