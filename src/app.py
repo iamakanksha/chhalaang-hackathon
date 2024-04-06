@@ -10,6 +10,8 @@ def detect_fraud():
     data = request.get_json()
     # Perform fraud detection logic here
     # ...
+    print(type(data))
+    print(data)
     detect(data)
     status = "ALERT";
     # Return the result

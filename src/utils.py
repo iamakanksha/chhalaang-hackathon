@@ -63,6 +63,10 @@ def rule_01(input_data, dataset, user_id=None):
     #    lambda x: print(x))]
     filtered_df = dataset[dataset['dateTimeTransaction'].apply(
         lambda x: datetime.fromtimestamp(x/1000) >= twelve_hours_ago)]
+    
+    if (filtered_df.empty):
+        return False
+    
     filtered_df.sort_values(by='dateTimeTransaction')
     if not filtered_df.empty:
         card_balance = filtered_df.iloc[0]
@@ -88,6 +92,9 @@ def rule_02(input_data, dataset, user_id=None):
         lambda x: datetime.fromtimestamp(x/1000) >= twelve_hours_ago)]
 
     print(filtered_df)
+    if (filtered_df.empty):
+        return False
+    
     if filtered_df['transactionAmount'].sum() >= 100000:
         count = 0
         for index, row in filtered_df.iterrows():
