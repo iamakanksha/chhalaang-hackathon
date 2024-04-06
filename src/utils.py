@@ -94,7 +94,7 @@ def rule_02(input_data, dataset, user_id=None):
     print(filtered_df)
     if (filtered_df.empty):
         return False
-    
+
     if filtered_df['transactionAmount'].sum() >= 100000:
         count = 0
         for index, row in filtered_df.iterrows():
@@ -114,9 +114,14 @@ def rule_03(input_data):
 
 def detect(input_data):
     transaction_data = load_csv_and_convert_to_df('dataset/user_data.csv')
-    print(rule_01(input_data, transaction_data))
-    print(rule_02(input_data, transaction_data))
+    violations = []
+    if (rule_01(input_data, transaction_data)):
+        violations.append("RULE-001")
 
+    if (rule_02(input_data, transaction_data)):
+        violations.append("RULE-002")
+
+    return violations
 
 input_data = {
     "transactionAmount": 300000,
