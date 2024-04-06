@@ -84,6 +84,9 @@ def rule_03(input_data, dataset, user_id=None):
     #    lambda x: print(x))]
     filtered_df = dataset[dataset['dateTimeTransaction'].apply(
         lambda x: datetime.fromtimestamp(x/1000) >= twelve_hours_ago)]
+    if filtered_df.empty:
+        return False
+
     remove_columns_from_df(filtered_df, 'encryptedPAN')
     remove_columns_from_df(filtered_df, 'encryptedHexCardNo')
     train_set, test_set = train_test_split(
