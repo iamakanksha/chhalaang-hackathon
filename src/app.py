@@ -1,7 +1,8 @@
-from app import app
-from Flask import request
+from flask import Flask, request
 from utils import detect
 import time
+
+app = Flask(__name__)
 
 @app.route('/fraud/detection', methods=['POST'])
 def detect_fraud():
@@ -9,7 +10,7 @@ def detect_fraud():
     data = request.get_json()
     # Perform fraud detection logic here
     # ...
-    detect(data)
+    #detect(data)
     status = "ALERT";
     # Return the result
     rule_violated = ["RULE-001", "RULE-003"]; # replace with method to get rule violated
@@ -23,3 +24,11 @@ def detect_fraud():
     }
 
     return result
+
+
+@app.route('/fraud', methods=['GET'])
+def get_fraud():
+    print("GET request received")
+
+if __name__ == '__main__':
+    app.run()

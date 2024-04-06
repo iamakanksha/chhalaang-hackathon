@@ -56,37 +56,59 @@ def rule_01(input_data, dataset, user_id=None):
 
     dataset = dataset[dataset['encryptedHexCardNo'].apply(
         lambda x: x == input_data['encryptedHexCardNo'])]
-    print(dataset)
     twelve_hours_ago = datetime.fromtimestamp(input_data['dateTimeTransaction']) - \
         timedelta(hours=12)
-    print(twelve_hours_ago)
 
-    print(dataset['dateTimeTransaction'])
+    # filtered_df = dataset[dataset['dateTimeTransaction'].apply(
+    #    lambda x: print(x))]
     filtered_df = dataset[dataset['dateTimeTransaction'].apply(
-        lambda x: print(x))]
-    filtered_df = dataset[dataset['dateTimeTransaction'].apply(
-        lambda x: datetime.fromtimestamp(x) >= twelve_hours_ago)]
+        lambda x: datetime.fromtimestamp(x/1000) >= twelve_hours_ago)]
     filtered_df.sort_values(by='dateTimeTransaction')
-    card_balance = df.iloc[0]
-    if card_balance >= 300000:
-        if filtered_df['transactionAmount'].sum() >= 0.70*card_balance:
-            return True
+    if not filtered_df.empty:
+        card_balance = filtered_df.iloc[0]
+        if card_balance >= 300000:
+            if filtered_df['transactionAmount'].sum() >= 0.70*card_balance:
+                return True
     return False
 
 
 def rule_02(input_data, dataset, user_id=None):
     if user_id:
-        dataset = dataset[dataset['encryptedPAN'] == user_id]
+        dataset = dataset[dataset['encryptedPAN'].apply(
+            lambda x: x == input_data['encryptedPAN'])]
 
-    twelve_hours_ago = input_data['dateTimeTransaction'] - \
+    dataset = dataset[dataset['encryptedHexCardNo'].apply(
+        lambda x: x == input_data['encryptedHexCardNo'])]
+    twelve_hours_ago = datetime.fromtimestamp(input_data['dateTimeTransaction']) - \
         timedelta(hours=12)
+
+    # filtered_df = dataset[dataset['dateTimeTransaction'].apply(
+    #    lambda x: print(x))]
     filtered_df = dataset[dataset['dateTimeTransaction'].apply(
-        lambda x: datetime.fromtimestamp(x) >= twelve_hours_ago)]
+        lambda x: datetime.fromtimestamp(x/1000) >= twelve_hours_ago)]
+
+    print(filtered_df)
+    if filtered_df['transactionAmount'].sum() >= 100000:
+        count = 0
+        for index, row in filtered_df.iterrows():
+            distance = calculate_distance(
+                (row['longitude'], row['latitude'], (input_data['longitude'], input_data['latitude'])))
+            print(distance)
+            if distance >= 200:
+                count += 1
+                if count > 5:
+                    return True
+    return False
+
+
+def rule_03(input_data):
+    pass
 
 
 def detect(input_data):
     transaction_data = load_csv_and_convert_to_df('dataset/user_data.csv')
     print(rule_01(input_data, transaction_data))
+    print(rule_02(input_data, transaction_data))
 
 
 input_data = {
@@ -100,3 +122,4 @@ input_data = {
     "longitude": 77.216721
 }
 
+# detect(input_data)
