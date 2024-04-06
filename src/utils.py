@@ -89,7 +89,7 @@ def rule_03(input_data):
     train_set, test_set = train_test_split(
         filtered_df, test_size=0.3, random_state=42)
 
-    unsupervised_learning(train_set, test_set, input_data)
+    return unsupervised_learning(train_set, test_set, input_data)
 
 
 def detect(input_data):
@@ -100,5 +100,8 @@ def detect(input_data):
 
     if (rule_02(input_data, transaction_data)):
         violations.append("RULE-002")
+
+    if (rule_03(input_data)):
+        violations.append("RULE-003")
 
     return violations
