@@ -94,6 +94,26 @@ def rule_03(input_data, dataset, user_id=None):
 
     return unsupervised_learning(train_set, test_set, input_data)
 
+def rule_04(input_data, dataset):
+    dataset = dataset[dataset['merchantCategoryCode'].apply(
+        lambda x: x == input_data['merchantCategoryCode'])]
+    twelve_hours_ago = datetime.fromtimestamp(input_data['dateTimeTransaction']) - \
+        timedelta(hours=12)
+
+    # filtered_df = dataset[dataset['dateTimeTransaction'].apply(
+    #    lambda x: print(x))]
+    filtered_df = dataset[dataset['dateTimeTransaction'].apply(
+        lambda x: datetime.fromtimestamp(x/1000) >= twelve_hours_ago)]
+    if filtered_df.empty:
+        return False
+
+    remove_columns_from_df(filtered_df, 'encryptedPAN')
+    remove_columns_from_df(filtered_df, 'encryptedHexCardNo')
+    train_set, test_set = train_test_split(
+        filtered_df, test_size=0.3, random_state=42)
+
+    return unsupervised_learning(train_set, test_set, input_data)
+
 
 def detect(input_data):
     transaction_data = load_csv_and_convert_to_df('dataset/user_data.csv')
@@ -106,5 +126,8 @@ def detect(input_data):
 
     if (rule_03(input_data, transaction_data)):
         violations.append("RULE-003")
+
+    if (rule_04(input_data, transaction_data)):
+        violations.append("RULE-004")
 
     return violations
